@@ -97,22 +97,3 @@ POST /leads/{lead_id}/engage → Trigger engagement → see execution results.
 GET /leads/{lead_id}/recommend → Get optimization recommendations.
 
 GET /leads/{lead_id} → Inspect memory/profile for stored episodes.
-
-
-             ┌───────────────┐
-             │   Control Plane│   (FastAPI + Endpoints)
-             │   (API Layer)  │
-             └───────┬───────┘
-                     │ calls
-         ┌───────────▼───────────┐
-         │       AgentBus        │   (event-driven orchestration)
-         └───────────┬───────────┘
-   ┌─────────────────┼───────────────────┐
-   │                 │                   │
-   ▼                 ▼                   ▼
-Triage Agent     Engage Agent       Campaign Agent
-(classifies)     (plans/executes)   (optimizes)
-   │                 │                   │
-   └───────► Memory Fabric ◄─────────────┘
-              (profile, short-term,
-               episodic storage)
