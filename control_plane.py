@@ -6,14 +6,14 @@ import uuid, asyncio
 from agent_bus import BUS
 from memory_fabric import get_profile, get_short_term, consolidate_into_profile, query_episodes
 
-# ✅ Import all agents so they self-register with BUS
+# Import all agents so they self-register with BUS
 import triage_agent
 import engage_agent
 import campaign_agent
 
 app = FastAPI(title="AIML Multi-Agent Control Plane - Prototype")
 
-# ✅ Root landing page (HTML for evaluators)
+# Root landing page (HTML for evaluators)
 @app.get("/", response_class=HTMLResponse)
 def root():
     return """
@@ -21,25 +21,25 @@ def root():
       <head><title>AIML Multi-Agent System</title></head>
       <body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
         <h1>AIML Multi-Agent Marketing System</h1>
-        <p>Status: <strong style="color:green;">Running ✅</strong></p>
+        <p>Status: <strong style="color:green;">Running</strong></p>
         <p>This service powers a modular multi-agent system with:</p>
         <ul style="list-style:none; padding:0;">
-          <li>🤖 Triage Agent – Lead classification</li>
-          <li>📩 Engage Agent – Strategy planning & execution</li>
-          <li>📊 Campaign Agent – Optimization recommendations</li>
-          <li>🧠 Memory Fabric – Profiles + Episodes</li>
+          <li>Triage Agent – Lead classification</li>
+          <li>Engage Agent – Strategy planning & execution</li>
+          <li>Campaign Agent – Optimization recommendations</li>
+          <li>Memory Fabric – Profiles + Episodes</li>
         </ul>
-        <p>➡️ Explore the <a href="/docs">Interactive API Documentation</a></p>
-        <p>➡️ Base Endpoint: <code>/leads</code> (Ingest new leads)</p>
+        <p>Explore the <a href="/docs">Interactive API Documentation</a></p>
+        <p>Base Endpoint: <code>/leads</code> (Ingest new leads)</p>
       </body>
     </html>
     """
 
-# ✅ JSON health-check for programmatic use
+# JSON health-check for programmatic use
 @app.get("/health")
 def health():
     return {
-        "status": "Service running ✅",
+        "status": "Service running",
         "message": "AIML Multi-Agent system is live!",
         "api_docs": "/docs"
     }
@@ -81,3 +81,4 @@ def recommend_for_lead(lead_id: str):
 @app.post("/consolidate/{lead_id}")
 def consolidate_lead(lead_id: str):
     return consolidate_into_profile(lead_id)
+
