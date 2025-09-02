@@ -13,7 +13,7 @@ import campaign_agent
 
 app = FastAPI(title="AIML Multi-Agent Control Plane - Prototype")
 
-# ✅ Root landing page (HTML instead of plain JSON)
+# ✅ Root landing page (HTML for evaluators)
 @app.get("/", response_class=HTMLResponse)
 def root():
     return """
@@ -23,7 +23,7 @@ def root():
         <h1>AIML Multi-Agent Marketing System</h1>
         <p>Status: <strong style="color:green;">Running ✅</strong></p>
         <p>This service powers a modular multi-agent system with:</p>
-        <ul style="list-style:none;">
+        <ul style="list-style:none; padding:0;">
           <li>🤖 Triage Agent – Lead classification</li>
           <li>📩 Engage Agent – Strategy planning & execution</li>
           <li>📊 Campaign Agent – Optimization recommendations</li>
@@ -34,6 +34,15 @@ def root():
       </body>
     </html>
     """
+
+# ✅ JSON health-check for programmatic use
+@app.get("/health")
+def health():
+    return {
+        "status": "Service running ✅",
+        "message": "AIML Multi-Agent system is live!",
+        "api_docs": "/docs"
+    }
 
 # --------- MODELS ---------
 class LeadIn(BaseModel):
