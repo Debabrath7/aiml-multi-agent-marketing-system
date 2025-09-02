@@ -13,7 +13,7 @@ This project was built as part of the **PurpleMerit AI/ML Engineer Assessment** 
 - **Memory Fabric** → Stores short-term, long-term, and episodic memory of interactions.  
 - **AgentBus Orchestration** → Event-driven communication between agents.  
 - **Control Plane API** → FastAPI service to expose endpoints for lead ingestion, engagement, and recommendations.  
-- **☁Deployment** → Fully deployed on **Render** with live API access.  
+- **Deployment** → Fully deployed on **Render** with live API access.  
 
 ---
 
@@ -41,8 +41,8 @@ Returns a **JSON status response**.
 
 POST /leads
 
-Body:
-```json
+Body
+json
 { "score": 0.8, "recency": 0.9 }
 
 
