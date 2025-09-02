@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import uuid, asyncio
 
@@ -12,17 +13,32 @@ import campaign_agent
 
 app = FastAPI(title="AIML Multi-Agent Control Plane - Prototype")
 
-# ✅ Root health check
-@app.get("/")
+# ✅ Root landing page (HTML instead of plain JSON)
+@app.get("/", response_class=HTMLResponse)
 def root():
-    return {"status": "Service running ✅", "message": "AIML Multi-Agent system is live!"}
-
+    return """
+    <html>
+      <head><title>AIML Multi-Agent System</title></head>
+      <body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+        <h1>AIML Multi-Agent Marketing System</h1>
+        <p>Status: <strong style="color:green;">Running ✅</strong></p>
+        <p>This service powers a modular multi-agent system with:</p>
+        <ul style="list-style:none;">
+          <li>🤖 Triage Agent – Lead classification</li>
+          <li>📩 Engage Agent – Strategy planning & execution</li>
+          <li>📊 Campaign Agent – Optimization recommendations</li>
+          <li>🧠 Memory Fabric – Profiles + Episodes</li>
+        </ul>
+        <p>➡️ Explore the <a href="/docs">Interactive API Documentation</a></p>
+        <p>➡️ Base Endpoint: <code>/leads</code> (Ingest new leads)</p>
+      </body>
+    </html>
+    """
 
 # --------- MODELS ---------
 class LeadIn(BaseModel):
     score: float
     recency: float
-
 
 # --------- ROUTES ---------
 
@@ -35,7 +51,6 @@ def ingest_lead(lead: LeadIn):
     }))
     return {"lead_id": lead_id, "triage": triage_res}
 
-
 @app.get("/leads/{lead_id}")
 def get_lead(lead_id: str):
     return {
@@ -44,18 +59,15 @@ def get_lead(lead_id: str):
         "episodes": query_episodes(lead_id)
     }
 
-
 @app.post("/leads/{lead_id}/engage")
 def engage_lead(lead_id: str):
     plan = asyncio.run(BUS.call("engage.plan", {"lead_id": lead_id}))
     exec_res = asyncio.run(BUS.call("engage.execute", plan))
     return {"plan": plan, "result": exec_res}
 
-
 @app.get("/leads/{lead_id}/recommend")
 def recommend_for_lead(lead_id: str):
     return asyncio.run(BUS.call("campaign.recommend", {"lead_id": lead_id}))
-
 
 @app.post("/consolidate/{lead_id}")
 def consolidate_lead(lead_id: str):
